@@ -1,0 +1,33 @@
+version: "3"
+
+volumes:
+  web:
+
+services:
+
+  haproxy:
+    image: haproxytech/haproxy-alpine:2.4
+    ports:
+      - "80:80"
+      - "8484:8484"
+    volumes:
+      - ./:/usr/local/etc/haproxy:ro
+    depends_on:
+      - apache1
+      - apache2
+
+  apache1:
+    build:
+     context: ./
+     dockerfile: Dockerfile1
+    hostname: apache1
+    expose:
+      - "80"
+
+  apache2:
+    build:
+      context: ./
+      dockerfile: Dockerfile2
+    hostname: apache2
+    expose:
+      - "80"
